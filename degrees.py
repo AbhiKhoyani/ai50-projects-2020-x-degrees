@@ -55,19 +55,23 @@ def load_data(directory):
 def main():
     if len(sys.argv) > 2:
         sys.exit("Usage: python degrees.py [directory]")
-    directory = sys.argv[1] if len(sys.argv) == 2 else "large"
+    directory = sys.argv[1] if len(sys.argv) == 2 else "small"
 
     # Load data from files into memory
     print("Loading data...")
     load_data(directory)
     print("Data loaded.")
+    source, target = None, None
 
-    source = person_id_for_name(input("Name: "))
-    if source is None:
-        sys.exit("Person not found.")
-    target = person_id_for_name(input("Name: "))
-    if target is None:
-        sys.exit("Person not found.")
+    while source is None:
+        source = person_id_for_name(input(" Source Name: "))
+    
+    '''if source is None:
+        sys.exit("Person not found.")'''
+    while target is None:
+        target = person_id_for_name(input("Target Name: "))
+    '''if target is None:
+        sys.exit("Person not found.")'''
 
     path = shortest_path(source, target)
 
@@ -91,7 +95,7 @@ def shortest_path(source, target):
 
     If no possible path, returns None.
     """
-    explored_state = set()
+    '''explored_state = set()
     explored_count = 0
     
         
@@ -136,7 +140,44 @@ def shortest_path(source, target):
         # Add neighbors to frontier
         for action,state in neighbors_for_person(node.state):
              if not frontier.contains_state(state) and state not in explored_state:
-                    frontier.add(Node(state=state,parent=node,action=action))
+                    frontier.add(Node(state=state,parent=node,action=action))'''
+    start = Node(state=source, parent=None, action=None)
+    frontier = QueueFrontier()
+    frontier.add(start)
+    
+    
+    explored = set()
+    explored_count = 0
+
+    
+    while True:
+
+        # If nothing left in the frontier, then no path
+        if frontier.empty():
+            return None
+        node = frontier.remove()
+        neighbors = neighbors_for_person(node.state)
+
+        for movie, actor in neighbors:
+            if actor not in explored and not frontier.contains_state(actor):
+                child = Node(state=actor, parent=node, action=movie)
+                frontier.add(child)
+                print(child)
+                
+                if child.state == target:
+                    path = []
+                    while child.parent is not None:
+                        path.append((child.action,child.state))
+                        child = child.parent
+                    path.reverse()
+                    return path
+        
+            #node = frontier.remove()
+            explored_count += 1
+            explored.add(node.state)
+
+        
+        
     
     
 
