@@ -89,58 +89,6 @@ def main():
 
 
 def shortest_path(source, target):
-    """
-    Returns the shortest list of (movie_id, person_id) pairs
-    that connect the source to the target.
-
-    If no possible path, returns None.
-    """
-    '''explored_state = set()
-    explored_count = 0
-    
-        
-    # Initialize frontier to just the starting position
-    start = Node(state=source, parent = None, action= None)
-    frontier = QueueFrontier()
-    frontier.add(start)
-    
-    # Keep looping until solution found
-    
-    while True:
-        # If nothing left in frontier, then no path
-        if frontier.empty():
-            raise Exception("No Solution Exist")
-        
-        # Choose a node from the frontier
-
-        node=frontier.remove()
-        explored_count += 1
-    
-        # If node is the goal, then we have a solution
-        if node.state == target:
-            movies=[]
-            stars=[]
-            while node.parent is not None:
-                movies.append(node.action)
-                stars.append(node.state)
-                node=node.parent
-            movies.reverse()
-            stars.reverse()
-            solution = []
-            for i,j in zip(movies,stars):
-                solution.append((i,j))
-            
-            
-                
-            
-            return solution
-        # Mark node as explored
-        explored_state.add(node.state)
-        
-        # Add neighbors to frontier
-        for action,state in neighbors_for_person(node.state):
-             if not frontier.contains_state(state) and state not in explored_state:
-                    frontier.add(Node(state=state,parent=node,action=action))'''
     start = Node(state=source, parent=None, action=None)
     frontier = QueueFrontier()
     frontier.add(start)
@@ -162,7 +110,7 @@ def shortest_path(source, target):
             if actor not in explored and not frontier.contains_state(actor):
                 child = Node(state=actor, parent=node, action=movie)
                 frontier.add(child)
-                print(child)
+                print(f" actor is {child.state} in movies {child.action}")
                 
                 if child.state == target:
                     path = []
